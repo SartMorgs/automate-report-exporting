@@ -1,6 +1,7 @@
 Include
 Lib
 Scripts
+__pycache__
 share
 *.env
 *.cfg
