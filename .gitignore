@@ -1,6 +1,7 @@
 Include
 Lib
 Scripts
+bash
 __pycache__
 share
 *.env
