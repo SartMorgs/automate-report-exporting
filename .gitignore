@@ -2,7 +2,10 @@ Include
 Lib
 Scripts
 bash
+build
+dist
 __pycache__
 share
 *.env
 *.cfg
+*.spec
