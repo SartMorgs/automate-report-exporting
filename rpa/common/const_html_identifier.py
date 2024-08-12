@@ -10,6 +10,7 @@ class HtmlTagIdentifiers:
     MAIN_FRAME = 'main'
     
     # XPath
+    CALENDAR_FILTER_BUTTON = "(//*[@id='btnDataInicial']/i)"
     FILTER_BUTTON_XPATH = "(//div[@class='d-flex justify-content-end align-items-start']/button[@class='btn btn-primary'])"
     DROP_DOWN_EXPORT_MENU_BUTTON_XPATH = "(//li[@id='fm-tab-export']/a)"
     DROP_DOWN_EXPORT_MENU_XPATH = "(//li[@id='fm-tab-export']/div[@class='fm-dropdown fm-shadow-container'])"

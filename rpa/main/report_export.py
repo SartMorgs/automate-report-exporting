@@ -11,10 +11,9 @@ class ReportExportMain:
         self.current_datetime = datetime.now()
         self.previous_day = self.current_datetime - timedelta(days=1)
         
-        self.start_date = self.previous_day.strftime("%d/%m/%Y")
-        self.end_date = self.current_datetime.strftime("%d/%m/%Y")
+        self.reference_date = self.previous_day.strftime("%d/%m/%Y")
         
-        self.os_report_data = OsReportData(self.start_date, self.end_date)
+        self.os_report_data = OsReportData(self.reference_date, self.reference_date)
         
     def __move_file(self, report_name):
         move_file = MoveFile()
