@@ -33,7 +33,8 @@ class FillerData:
         for row in self.data:
             name = self.__format_name(row[3])
             seller_name = self.__format_seller(row[6])
-            sorted_data = [name, seller_name, row[5], row[1], row[4]]
+            os_number = row[1].replace('.', '').replace(',', '')
+            sorted_data = [name, seller_name, row[5], os_number[:-2], row[4]]
             values_for_row.append(sorted_data)
         
         return values_for_row

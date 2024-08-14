@@ -20,7 +20,7 @@ The content of this abstract are:
 
 3. Run main.py or generate .exe file
 - ´python main.py´
-- ´pyinstaller --onefile --add-data ".env:." --windowed main.py´
+- ´pyinstaller --onefile --add-data ".env;." --windowed main.py´
 
 ## How it works
 
