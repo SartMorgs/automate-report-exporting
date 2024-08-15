@@ -16,9 +16,9 @@ class ReportExportMain:
         self.os_report_data = OsReportData(self.reference_date, self.reference_date)
         
     def __move_file(self, report_name):
-        move_file = MoveFile()
+        move_file = MoveFile('otica-nany', report_name)
         source_path = f'{self.user_path}\\Downloads\\pivot.csv'
-        move_file.move_file_from_downloads(source_path, f'otica-nany\\{report_name}', report_name)
+        move_file.move_file_from_downloads(source_path)
         
         
     def main(self):
