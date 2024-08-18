@@ -1,6 +1,7 @@
 Include
 Lib
 Scripts
+bin
 bash
 build
 dist
@@ -9,3 +10,5 @@ share
 *.env
 *.cfg
 *.spec
+*.pytest_cache
+*.db
