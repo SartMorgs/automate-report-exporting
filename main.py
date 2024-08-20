@@ -4,8 +4,8 @@ from report_feeding.report.main.jit_generation import JitGeneration
 from data_loading.config.database import init_db
 
 
-# report_export_main = ReportExportMain()
-# report_export_main.main()
+report_export_main = ReportExportMain()
+report_export_main.main()
 
 init_db()
 
