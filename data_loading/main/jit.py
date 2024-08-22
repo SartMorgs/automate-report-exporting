@@ -1,7 +1,7 @@
 import pandas as pd
 from data_loading.models.jit import Jit
 from data_loading.repositories.jit_repository import JitRepository
-from data_loading.config.database import session, init_db
+from data_loading.config.database import session
 from rpa.common.move_file import MoveFile
 
 
@@ -21,8 +21,6 @@ class JitMain():
         self.__DUE_DATE_COLUMN = 'Previsão de Entrega'
         self.__VENDOR_ROW_COLUMN = 'Vendedor'
         self.__STATUS_COLUMN = 'DescricaoPosicao'
-        
-        init_db()
         
     def __read_file(self):
         df = pd.read_csv(self.move_file.SOURCE_REPORT_EXTRACTION_PATH)
@@ -47,9 +45,14 @@ class JitMain():
             )
             self.jit_repository.create_jit_only_if_doesnt_exist(jit)
             
-    def main(self):
+    def create_jit(self):
         df = self.__read_file()
         self.__save_jit_as_not_generated(df)
+        
+    def update_is_generated(self):
+        df = self.__read_file()
+        for os in df[self.__OS_NUMBER_COLUMN]:
+            self.jit_repository.update_to_is_generated(os)
         
 if __name__ == "__main__":
     jit = JitMain()

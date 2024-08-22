@@ -79,7 +79,7 @@ class TestApp(unittest.TestCase):
         )
         self.jit_repository.create_jit(jit)
         queried_jit = self.session.query(Jit).filter_by(os_number=jit.os_number).first()
-        self.jit_repository.update_to_is_generated(queried_jit.id)
+        self.jit_repository.update_to_is_generated(queried_jit.os_number)
         self.assertEqual(queried_jit.os_number, jit.os_number)
         self.assertEqual(queried_jit.is_generated, jit.is_generated)
 

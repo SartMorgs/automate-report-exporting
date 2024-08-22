@@ -11,3 +11,4 @@ share
 *.cfg
 *.spec
 *.pytest_cache
+*.db

@@ -31,3 +31,9 @@ class JitService:
             )
             return self.jit_repo.create_jit(jit)
         return jit
+    
+    def check_existance_of_jit_by_os_number(self, os_number):
+        return self.jit_repo.check_existence(os_number)
+    
+    def get_all(self):
+        return self.jit_repo.get_all_jits()
