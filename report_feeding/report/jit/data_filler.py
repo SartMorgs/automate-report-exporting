@@ -20,7 +20,7 @@ class FillerData:
         final_name = f'{list_name_used[0]} {middle_name} {list_name_used[-1]}'
         return final_name
     
-    def __format_seller(self, source_name):
+    def __format_vendor(self, source_name):
         if len(source_name) < 24:
             return source_name
         source_name_with_no_digits = source_name.split('-')[1] if source_name[0].isdigit() else source_name
@@ -32,12 +32,19 @@ class FillerData:
         values_for_row = []
         for row in self.data:
             name = self.__format_name(row[3])
-            seller_name = self.__format_seller(row[6])
-            os_number = row[1].replace('.', '').replace(',', '')
-            sorted_data = [name, seller_name, row[5], os_number[:-2], row[4]]
+            vendor_name = self.__format_vendor(row[6])
+            os_number = row[1]
+            sorted_data = [name, vendor_name, row[5], os_number, row[4]]
             values_for_row.append(sorted_data)
         
         return values_for_row
+    
+    def __convert_to_string(self, data):
+        string_data = []
+        for line in data:
+            new_line = [str(row) for row in line]
+            string_data.append(new_line)
+        return string_data
     
     def __get_values_per_row(self, data, first_row):
         return {
@@ -58,7 +65,7 @@ class FillerData:
         wb = load_workbook(self.filename)
         ws = wb.active
         
-        sort_data = self.__get_sort_data()
+        sort_data = self.__convert_to_string(self.__get_sort_data())
         rows_count = len(sort_data)
         
         first_column = FIRST_COLUMN_USED
@@ -70,7 +77,7 @@ class FillerData:
                 last_row = first_row + JIT_VERTICAL_SIZE
                 self.__fill_box(ws, first_row, last_row, first_column, row_data)
                 first_row = last_row + ROW_INTERVAL
-                
+
                 total = total - 1
                 
                 if total <= 0:
