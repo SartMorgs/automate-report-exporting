@@ -7,6 +7,7 @@ class FillerData:
     def __init__(self, filename, data):
         self.filename = filename
         self.data = data
+        print(self.data)
         
         self.__JIT_VERTICAL_COUNT = get_jit_report_vertical_count(len(self.data))
         
@@ -20,7 +21,7 @@ class FillerData:
         final_name = f'{list_name_used[0]} {middle_name} {list_name_used[-1]}'
         return final_name
     
-    def __format_seller(self, source_name):
+    def __format_vendor(self, source_name):
         if len(source_name) < 24:
             return source_name
         source_name_with_no_digits = source_name.split('-')[1] if source_name[0].isdigit() else source_name
@@ -32,7 +33,7 @@ class FillerData:
         values_for_row = []
         for row in self.data:
             name = self.__format_name(row[3])
-            seller_name = self.__format_seller(row[6])
+            seller_name = self.__format_vendor(row[6])
             os_number = row[1].replace('.', '').replace(',', '')
             sorted_data = [name, seller_name, row[5], os_number[:-2], row[4]]
             values_for_row.append(sorted_data)
@@ -71,6 +72,11 @@ class FillerData:
                 self.__fill_box(ws, first_row, last_row, first_column, row_data)
                 first_row = last_row + ROW_INTERVAL
                 
+                print(f'rows_count: {rows_count}')
+                print(f'total: {total}')
+                print(sort_data)
+                print('\n')
+
                 total = total - 1
                 
                 if total <= 0:
