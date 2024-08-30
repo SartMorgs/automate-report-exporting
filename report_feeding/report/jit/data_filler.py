@@ -8,7 +8,7 @@ class FillerData:
         self.filename = filename
         self.data = data
         
-        self.__JIT_VERTICAL_COUNT = get_jit_report_vertical_count(len(self.data))
+        self.__JIT_VERTICAL_COUNT = get_jit_report_vertical_count(len(self.data)) + 1
         
     def __format_name(self, source_name):
         if len(source_name) < 20:
@@ -67,23 +67,24 @@ class FillerData:
         
         sort_data = self.__convert_to_string(self.__get_sort_data())
         rows_count = len(sort_data)
-        
-        first_column = FIRST_COLUMN_USED
-        total = rows_count
-        for column in JIT_COLUMNS_USED:
-            first_row = FIRST_ROW_USED
-            for row in range(1, self.__JIT_VERTICAL_COUNT):
-                row_data = self.__get_values_per_row(sort_data[rows_count - total], first_row)
-                last_row = first_row + JIT_VERTICAL_SIZE
-                self.__fill_box(ws, first_row, last_row, first_column, row_data)
-                first_row = last_row + ROW_INTERVAL
 
-                total = total - 1
+        first_row = FIRST_ROW_USED
+        total = rows_count
+        
+        for row in range(1, self.__JIT_VERTICAL_COUNT):
+            last_row = first_row + JIT_VERTICAL_SIZE
+            first_column = FIRST_COLUMN_USED
+            for column in JIT_COLUMNS_USED:
+                row_data = self.__get_values_per_row(sort_data[rows_count - total], first_row)
+                self.__fill_box(ws, first_row, last_row, first_column, row_data)
                 
+                first_column = first_column + COLUMN_INTERVAL
+                total = total - 1
+
                 if total <= 0:
                     break
-            
-            first_column = first_column + COLUMN_INTERVAL
+
+            first_row = last_row + ROW_INTERVAL
         
         wb.save(self.filename)
         

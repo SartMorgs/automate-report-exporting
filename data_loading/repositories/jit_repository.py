@@ -33,3 +33,8 @@ class JitRepository:
     
     def get_all_jits(self):
         return self.db.query(Jit).all()
+
+    def delete_all_jits(self):
+        stm = f"DELETE FROM {Jit.__tablename__}"
+        self.db.execute(text(stm))
+        self.db.commit()

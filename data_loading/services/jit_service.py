@@ -37,3 +37,6 @@ class JitService:
     
     def get_all(self):
         return self.jit_repo.get_all_jits()
+
+    def delete_all(self):
+        return self.jit_repo.delete_all_jits()

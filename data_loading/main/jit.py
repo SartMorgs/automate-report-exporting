@@ -59,6 +59,9 @@ class JitMain():
     def __create_vendor_alias(self, vendor_name):
         vendor_code = vendor_name[:2]
         return self.__VENDOR_ALIAS[vendor_code]
+    
+    def delete_all_jits(self):
+        self.jit_repository.delete_all_jits()
             
     def create_jit(self):
         df = self.__read_file()
