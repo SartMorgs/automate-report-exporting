@@ -13,7 +13,7 @@ class LayoutBuilder:
         self.__BOTTOM_BORDER = Border(bottom=Side(style='thick'), left=Side(style='thick'),  right=Side(style='thick'))
         
         self.__JIT_COLUMN_SIZE = 27
-        self.__JIT_VERTICAL_COUNT = get_jit_report_vertical_count(rows_count)
+        self.__JIT_VERTICAL_COUNT = get_jit_report_vertical_count(rows_count) + 1
         self.__REPRO_COUNT = repro_count
         
         # Layout Details
@@ -63,25 +63,26 @@ class LayoutBuilder:
         wb = Workbook()
         ws = wb.active
         
-        first_column = FIRST_COLUMN_USED
+        first_row = FIRST_ROW_USED
         total = self.rows_count
         store_count = self.rows_count - self.__REPRO_COUNT
-        for column in JIT_COLUMNS_USED:
-            ws.column_dimensions[column].width = self.__JIT_COLUMN_SIZE
-            
-            first_row = FIRST_ROW_USED
-            for row in range(1, self.__JIT_VERTICAL_COUNT):
-                last_row = first_row + JIT_VERTICAL_SIZE
+        
+        for row in range(1, self.__JIT_VERTICAL_COUNT):
+            last_row = first_row + JIT_VERTICAL_SIZE
+            first_column = FIRST_COLUMN_USED
+            for column in JIT_COLUMNS_USED:
+                ws.column_dimensions[column].width = self.__JIT_COLUMN_SIZE
+                
                 box_type = STORE_VALUE if store_count > 0 else REPRO_VALUE
                 self.__generate_layout(ws, first_row, last_row, first_column, box_type)
-                first_row = last_row + ROW_INTERVAL
-                
+
+                first_column = first_column + COLUMN_INTERVAL 
                 store_count = store_count - 1
                 total = total - 1
-                
+
                 if total <= 0:
                     break
-            
-            first_column = first_column + COLUMN_INTERVAL
+
+            first_row = last_row + ROW_INTERVAL
         
         wb.save(self.filename)

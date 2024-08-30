@@ -10,6 +10,7 @@ report_export_main.main()
 init_db()
 
 jit_database_feeding = JitMain()
+jit_database_feeding.delete_all_jits()
 jit_database_feeding.create_jit()
 jit_generation = JitGeneration()
 jit_generation.generate()
