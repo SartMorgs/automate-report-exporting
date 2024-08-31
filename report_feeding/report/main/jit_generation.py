@@ -67,9 +67,6 @@ class JitGeneration:
         os.makedirs(self.__TARGET_FOLDER, exist_ok=True)
 
         if self.__is_xlsx_empty(self.__TARGET_PATH):
-            # layout_builder = LayoutBuilder(len(full_data), self.__TARGET_PATH, repro_data_size)
-            # layout_builder.build()
-
             filler_data = FillerData(self.__TARGET_PATH, full_data, repro_data_size)
             filler_data.build_and_fill()
 
