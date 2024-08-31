@@ -1,6 +1,5 @@
 import os
 from datetime import datetime
-from report_feeding.data_source.database_source import DatabaseDataSource as DbSource
 from report_feeding.report.jit.layout_builder import LayoutBuilder
 from report_feeding.report.jit.data_filler import FillerData
 from data_loading.repositories.jit_repository import JitRepository
@@ -13,12 +12,7 @@ class JitGeneration:
     def __init__(self):
 
         self.current_datetime = datetime.now().strftime("%Y-%m-%d")
-        
-        self.db_name = os.environ.get('DB_NAME', None)
-        self.db_user = os.environ.get('DB_USER', None)
-        self.db_password = os.environ.get('DB_PASSWORD', None)
-        self.db_host = os.environ.get('DB_HOST', None)
-        self.db_port = os.environ.get('DB_PORT', None)
+
         self.table_name = 'jit'
         self.user_path = os.environ.get('STORE_PATH', None)
 
@@ -29,9 +23,12 @@ class JitGeneration:
         
         self.jit_repository = JitRepository(session)
         self.jit_service = JitService(self.jit_repository)
+
+        self.data = self.__read_table()
         
-        self.db_data_source = DbSource(self.jit_repository)
-        self.data = self.db_data_source.read_jit()
+    def __read_table(self):
+        jit_table = self.jit_service.get_all()
+        return [[jit.os_date, jit.os_number, jit.laboratory, jit.customer_name, jit.note, jit.due_date, jit.vendor, jit.status, jit.is_generated] for jit in jit_table]
     
     def __get_only_existant_data(self):
         return [jit for jit in self.data if self.jit_service.check_existance_of_jit_by_os_number(jit[1])]
@@ -70,11 +67,11 @@ class JitGeneration:
         os.makedirs(self.__TARGET_FOLDER, exist_ok=True)
 
         if self.__is_xlsx_empty(self.__TARGET_PATH):
-            layout_builder = LayoutBuilder(len(full_data), self.__TARGET_PATH, repro_data_size)
-            layout_builder.build()
+            # layout_builder = LayoutBuilder(len(full_data), self.__TARGET_PATH, repro_data_size)
+            # layout_builder.build()
 
-            filler_data = FillerData(self.__TARGET_PATH, full_data)
-            filler_data.fill()
+            filler_data = FillerData(self.__TARGET_PATH, full_data, repro_data_size)
+            filler_data.build_and_fill()
 
 if __name__ == "__main__":
     jit_generation = JitGeneration()

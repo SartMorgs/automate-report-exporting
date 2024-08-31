@@ -1,14 +1,17 @@
-from openpyxl import load_workbook
+from openpyxl import Workbook
 from report_feeding.report.jit.utils import get_jit_report_vertical_count
-from report_feeding.report.jit.utils import JIT_COLUMNS_USED, FIRST_COLUMN_USED, COLUMN_INTERVAL, FIRST_ROW_USED, JIT_VERTICAL_SIZE, ROW_INTERVAL, STORE_VALUE, REPRO_VALUE
+from report_feeding.report.jit.utils import JIT_COLUMNS_USED, FIRST_COLUMN_USED, COLUMN_INTERVAL, FIRST_ROW_USED, JIT_VERTICAL_SIZE, ROW_INTERVAL, STORE_VALUE, REPRO_VALUE, JIT_COLUMN_SIZE
+from report_feeding.report.jit.layout_builder import LayoutBuilder
 
 
-class FillerData:
-    def __init__(self, filename, data):
+class FillerData(LayoutBuilder):
+    def __init__(self, filename, data, repro_count):
         self.filename = filename
         self.data = data
         
         self.__JIT_VERTICAL_COUNT = get_jit_report_vertical_count(len(self.data)) + 1
+        
+        super().__init__(len(self.data), filename, repro_count)
         
     def __format_name(self, source_name):
         if len(source_name) < 20:
@@ -61,20 +64,29 @@ class FillerData:
                 if cell.row in data.keys():
                     cell.value = data[cell.row]
         
-    def fill(self):
-        wb = load_workbook(self.filename)
+    def build_and_fill(self):
+        #wb = load_workbook(self.filename)
+        wb = Workbook()
         ws = wb.active
         
         sort_data = self.__convert_to_string(self.__get_sort_data())
         rows_count = len(sort_data)
 
+        # This logis is used in both FillerData and LayoutBuilder
         first_row = FIRST_ROW_USED
         total = rows_count
+        store_count = self.rows_count - self._REPRO_COUNT
         
         for row in range(1, self.__JIT_VERTICAL_COUNT):
             last_row = first_row + JIT_VERTICAL_SIZE
             first_column = FIRST_COLUMN_USED
             for column in JIT_COLUMNS_USED:
+                # Layout builder
+                ws.column_dimensions[column].width = JIT_COLUMN_SIZE
+                box_type = STORE_VALUE if store_count > 0 else REPRO_VALUE
+                self._generate_layout(ws, first_row, last_row, first_column, box_type)
+                store_count = store_count - 1
+
                 row_data = self.__get_values_per_row(sort_data[rows_count - total], first_row)
                 self.__fill_box(ws, first_row, last_row, first_column, row_data)
                 
