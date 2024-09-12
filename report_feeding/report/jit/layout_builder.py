@@ -11,7 +11,6 @@ class LayoutBuilder:
         self.__TOP_BORDER = Border(top=Side(style='thick'), left=Side(style='thick'), right=Side(style='thick'))
         self.__BOTTOM_BORDER = Border(bottom=Side(style='thick'), left=Side(style='thick'),  right=Side(style='thick'))
         
-        self.__JIT_VERTICAL_COUNT = get_jit_report_vertical_count(rows_count) + 1
         self._REPRO_COUNT = repro_count
         
         # Layout Details
@@ -24,14 +23,14 @@ class LayoutBuilder:
                 'background_color': '0000B050',
                 'fill_type': 'solid',
                 'font_color': 'FFFFFF',
-                'font_size': 12,
+                'font_size': 10,
                 'value': STORE_VALUE
             },
             REPRO_VALUE: {
                 'background_color': 'ff000000',
                 'fill_type': 'solid',
                 'font_color': 'FFFFFF',
-                'font_size': 12,
+                'font_size': 10,
                 'value': REPRO_VALUE
             }
         }

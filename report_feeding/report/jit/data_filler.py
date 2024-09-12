@@ -1,3 +1,4 @@
+from datetime import datetime
 from openpyxl import Workbook
 from report_feeding.report.jit.utils import get_jit_report_vertical_count
 from report_feeding.report.jit.utils import JIT_COLUMNS_USED, FIRST_COLUMN_USED, COLUMN_INTERVAL, FIRST_ROW_USED, JIT_VERTICAL_SIZE, ROW_INTERVAL, STORE_VALUE, REPRO_VALUE, JIT_COLUMN_SIZE
@@ -53,7 +54,7 @@ class FillerData(LayoutBuilder):
         return {
             (first_row + 1): data[0],
             (first_row + 2): data[1],
-            (first_row + 3): data[2],
+            (first_row + 3): datetime.strptime(data[2], '%Y-%m-%d').strftime('%d/%m/%Y'),
             (first_row + 5): data[3],
             (first_row + 6): data[4],
         }
@@ -81,6 +82,8 @@ class FillerData(LayoutBuilder):
             last_row = first_row + JIT_VERTICAL_SIZE
             first_column = FIRST_COLUMN_USED
             for column in JIT_COLUMNS_USED:
+                if total <= 0:
+                    break
                 # Layout builder
                 ws.column_dimensions[column].width = JIT_COLUMN_SIZE
                 box_type = STORE_VALUE if store_count > 0 else REPRO_VALUE
@@ -92,9 +95,6 @@ class FillerData(LayoutBuilder):
                 
                 first_column = first_column + COLUMN_INTERVAL
                 total = total - 1
-
-                if total <= 0:
-                    break
 
             first_row = last_row + ROW_INTERVAL
         

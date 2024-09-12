@@ -11,8 +11,9 @@ class CommonPageNavigation:
         self.__MIN_WAIT_SECONDS = 20
         
     def navigate_to_report_board_selection(self):
+        time.sleep(10)
         WebDriverWait(self.driver, self.__MIN_WAIT_SECONDS).until(EC.element_to_be_clickable((By.ID, CommonHtmlId.LEFT_MENU_REPORT_BUTTON_ID))).click()
-        time.sleep(3)
+        time.sleep(10)
         WebDriverWait(self.driver, self.__MIN_WAIT_SECONDS).until(EC.element_to_be_clickable((By.CSS_SELECTOR, CommonHtmlId.LEFT_MENU_HIDDEN_ACCESS_BUTTON_ID))).click()
-        time.sleep(3)
+        time.sleep(10)
         self.driver.switch_to.frame(self.driver.find_element(By.ID, CommonHtmlId.MAIN_FRAME))

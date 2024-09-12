@@ -34,7 +34,7 @@ class JitMain():
             self.jit_repository.create_jit_only_if_doesnt_exist(jit)
 
     def __create_vendor_alias(self, vendor_name):
-        vendor_code = vendor_name[:2]
+        vendor_code = vendor_name[:2].rstrip()
         return self.__VENDOR_ALIAS[vendor_code]
     
     def delete_all_jits(self):
