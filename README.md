@@ -1,6 +1,6 @@
-# Automate Report Exporting - XML Generation from ERP Report Export
+# Automate Report Exporting - XLSX Generation from ERP Report Export
 
-This repository has a python code to download reports from ERP used by Ótica Nany and use this data to generate a XML report. This report is used by the store to track the client's requests.
+This repository has a python code to download reports from ERP used by Ótica Nany and use this data to generate a XLSX report. This report is used by the store to track the client's requests.
 The content of this abstract are:
 
 - How to run it by yourself
@@ -24,7 +24,7 @@ The content of this abstract are:
 
 ## How it works
 
-It first uses selenium to navigate over ERP pages to report page, set filters, download the file and save it in a specific folder. Right after, it uses the data generated and build a XML report in a specific folder.
+It first uses selenium to navigate over ERP pages to report page, set filters, download the file and save it in a specific folder. Right after, it uses the data generated and build a XLSX report in a specific folder.
 ![alt text](img/image.png)
 
 ## How to report bugs and errors
