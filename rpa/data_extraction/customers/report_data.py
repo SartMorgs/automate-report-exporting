@@ -19,6 +19,9 @@ class CustomerReportData:
 
         self.__CUSTOMER_PROVIDER_REPORT_DEFAULT_NAME = "Relatório clientesfornecedores  Microvix-erp.csv"
         self.__CUSTOMER_PROVIDER_REPORT_NEW_NAME = "customer_provider"
+        
+        self.navigate = CommonPageNavigation(self.driver)
+        self.erp_login = ErpLogin(self.driver)
     
     def __set_column_xpath(self, number):
         return f"//*[@id='exibir_campos']/option[{number}]"
@@ -35,18 +38,14 @@ class CustomerReportData:
     
     def __select_checkboxes(self, select_boxes):
         if not select_boxes:
-            self.driver.find_element(By.ID, HtmlTagId.LIST_IN_COLUMNS_CHECK_ID).click()
-            time.sleep(1)
-            self.driver.find_element(By.ID, HtmlTagId.LIST_IN_COLUMNS_CHECK_ID).click()
+            self.navigate.click_button_by_id(HtmlTagId.LIST_IN_COLUMNS_CHECK_ID, 0)
+            self.navigate.click_button_by_id(HtmlTagId.LIST_IN_COLUMNS_CHECK_ID, 1)
             time.sleep(1)
             return
-        self.driver.find_element(By.ID, HtmlTagId.CUSTOMER_TYPE_CHECK_ID).click()
-        time.sleep(1)
-        self.driver.find_element(By.ID, HtmlTagId.CUSTOMER_AND_PROVIDER_TYPE_CHECK_ID).click()
-        time.sleep(1)
-        self.driver.find_element(By.ID, HtmlTagId.DISABLED_CUSTOMERS_CHECK_ID).click()
-        time.sleep(1)
-        self.driver.find_element(By.ID, HtmlTagId.LIST_IN_COLUMNS_CHECK_ID).click()
+        self.navigate.click_button_by_id(HtmlTagId.CUSTOMER_TYPE_CHECK_ID, 0)
+        self.navigate.click_button_by_id(HtmlTagId.CUSTOMER_AND_PROVIDER_TYPE_CHECK_ID, 1)
+        self.navigate.click_button_by_id(HtmlTagId.DISABLED_CUSTOMERS_CHECK_ID, 1)
+        self.navigate.click_button_by_id( HtmlTagId.LIST_IN_COLUMNS_CHECK_ID, 1)
         time.sleep(1)
     
     def __select_columns(self):
@@ -62,8 +61,7 @@ class CustomerReportData:
     def __generate_csv(self, start_code, end_code, select_boxes):
         self.__filter_customers(start_code, end_code, select_boxes)
         self.driver.find_element(By.XPATH, HtmlTagId.CUSTOMER_GENERATE_REPORT_XPATH).click()
-        time.sleep(2)
-        WebDriverWait(self.driver, self.__MIN_WAIT_SECONDS).until(EC.element_to_be_clickable((By.XPATH, HtmlTagId.GENERATE_CSV_FILE_BUTTON_XPATH))).click()
+        self.navigate.click_button_by_xpath(HtmlTagId.GENERATE_CSV_FILE_BUTTON_XPATH, 2)
         time.sleep(20)
         
     def __rename_file(self, old_filename, new_filename):
@@ -73,11 +71,8 @@ class CustomerReportData:
         os.rename(full_old_filename, full_new_filename)
         
     def generate_customer_report(self):
-        erp_login = ErpLogin(self.driver)
-        navigate = CommonPageNavigation(self.driver)
-
-        erp_login.erp_login()
-        navigate.navigate_to_customer_report_page()
+        self.erp_login.erp_login()
+        self.navigate.navigate_to_customer_report_page()
         
         start_code = 1
         final_code = 5000
@@ -86,7 +81,7 @@ class CustomerReportData:
             self.__generate_csv(start_code, final_code, select_boxes)
             final_filename = f"{self.__CUSTOMER_PROVIDER_REPORT_NEW_NAME}_{final_code}.csv"
             self.__rename_file(self.__CUSTOMER_PROVIDER_REPORT_DEFAULT_NAME, final_filename)
-            navigate.return_page()
+            self.navigate.return_page()
             select_boxes = False
             start_code = final_code
             final_code = final_code + 5000

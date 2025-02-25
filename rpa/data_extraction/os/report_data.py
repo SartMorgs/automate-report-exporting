@@ -18,6 +18,9 @@ class OsReportData:
         
         self.start_date_filter = start_date
         self.end_date_filter = end_date
+        
+        self.erp_login = ErpLogin(self.driver)
+        self.navigate = CommonPageNavigation(self.driver)
     
     def access_os_report_menu_page(self):
         WebDriverWait(self.driver, self.__MIN_WAIT_SECONDS).until(EC.presence_of_element_located((By.XPATH, HtmlTagId.OS_REPORT_BOX_XPATH))).click()
@@ -31,7 +34,7 @@ class OsReportData:
         return f"arguments[0].value = '{value}';"
 
     def __filter_by_date(self):
-        WebDriverWait(self.driver, self.__MIN_WAIT_SECONDS).until(EC.presence_of_element_located((By.XPATH, CommonHtmlId.FILTER_BUTTON_XPATH)))
+        self.navigate.click_button_by_xpath(CommonHtmlId.FILTER_BUTTON_XPATH, 0)
         start_date = self.driver.find_element(By.ID, HtmlTagId.START_DATE_FORM_ID)
         end_date = self.driver.find_element(By.ID, HtmlTagId.END_DATE_FORM_ID)
         self.driver.find_element(By.ID, HtmlTagId.START_DATE_FORM_ID).click()
@@ -42,16 +45,13 @@ class OsReportData:
         self.driver.find_element(By.XPATH, CommonHtmlId.FILTER_BUTTON_XPATH).click()
 
     def __export_csv_data(self):
-        WebDriverWait(self.driver, self.__MIN_WAIT_SECONDS).until(EC.element_to_be_clickable((By.XPATH, HtmlTagId.DROP_DOWN_EXPORT_MENU_BUTTON_XPATH))).click()
+        self.navigate.click_button_by_xpath(HtmlTagId.DROP_DOWN_EXPORT_MENU_BUTTON_XPATH, 0)
         self.driver.find_element(By.XPATH, CommonHtmlId.CSV_EXPORT_BUTTON_ID).click()
         time.sleep(10)
         
     def generate_jit_report(self):    
-        erp_login = ErpLogin(self.driver)
-        navigate = CommonPageNavigation(self.driver)
-
-        erp_login.erp_login()
-        navigate.navigate_to_report_board_selection()
+        self.erp_login.erp_login()
+        self.navigate.navigate_to_report_board_selection()
 
         self.__access_jit_report_filter_page()
         self.__filter_by_date()
