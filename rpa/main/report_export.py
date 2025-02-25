@@ -1,6 +1,8 @@
 import os
+from dotenv import load_dotenv
 from datetime import datetime, timedelta
 from rpa.data_extraction.os.report_data import OsReportData
+from rpa.data_extraction.customers.report_data import CustomerReportData
 from rpa.common.move_file import MoveFile
 
 
@@ -13,17 +15,26 @@ class ReportExportMain:
         
         self.reference_date = self.previous_day.strftime("%d/%m/%Y")
         
-        self.os_report_data = OsReportData(self.reference_date, self.reference_date)
+        load_dotenv()
+        self.final_code = int(os.getenv('FINAL_CODE', '30000'))
         
-    def __move_file(self, report_name):
-        move_file = MoveFile('otica-nany', report_name)
-        source_path = f'{self.user_path}\\Downloads\\pivot.csv'
+        #self.os_report_data = OsReportData(self.reference_date, self.reference_date)
+        self.customer_report_data = CustomerReportData(self.final_code)
+        
+    def __move_file(self, report_name, file_name):
+        move_file = MoveFile('otica-nany', report_name, file_name)
+        source_path = f'{self.user_path}\\Downloads\\{file_name}.csv'
         move_file.move_file_from_downloads(source_path)
         
         
     def main(self):
-        self.os_report_data.generate_jit_report()
-        self.__move_file('os')
+        #self.os_report_data.generate_jit_report()
+        #self.__move_file('os', 'pivot.csv')
+        self.customer_report_data.generate_customer_report()
+        it_code = 5000
+        while it_code <= self.final_code:
+            self.__move_file('customer', f'customer_provider_{it_code}')
+            it_code = it_code + 5000
 
 
 if __name__ == "__main__":
