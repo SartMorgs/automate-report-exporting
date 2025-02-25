@@ -29,7 +29,8 @@ class Jit:
     
     
     def __filter_note_column_for_valid_values(self, df):
-        only_integer_note_column_df = df[df[self.NOTE_COLUMN].str.isdigit()]
+        string_regular_expression = r'[A-Za-z]'
+        only_integer_note_column_df = df[~df[self.NOTE_COLUMN].str.contains(string_regular_expression, na=False)]
         return only_integer_note_column_df[only_integer_note_column_df[self.NOTE_COLUMN] != '0']
     
     def get_data(self):

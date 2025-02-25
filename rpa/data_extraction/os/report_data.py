@@ -44,7 +44,7 @@ class OsReportData:
     def __export_csv_data(self):
         WebDriverWait(self.driver, self.__MIN_WAIT_SECONDS).until(EC.element_to_be_clickable((By.XPATH, HtmlTagId.DROP_DOWN_EXPORT_MENU_BUTTON_XPATH))).click()
         self.driver.find_element(By.XPATH, CommonHtmlId.CSV_EXPORT_BUTTON_ID).click()
-        time.sleep(5)
+        time.sleep(10)
         
     def generate_jit_report(self):    
         erp_login = ErpLogin(self.driver)
