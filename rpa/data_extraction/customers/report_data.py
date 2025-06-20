@@ -45,11 +45,11 @@ class CustomerReportData:
         self.navigate.click_button_by_id(HtmlTagId.CUSTOMER_TYPE_CHECK_ID, 0)
         self.navigate.click_button_by_id(HtmlTagId.CUSTOMER_AND_PROVIDER_TYPE_CHECK_ID, 1)
         self.navigate.click_button_by_id(HtmlTagId.DISABLED_CUSTOMERS_CHECK_ID, 1)
-        self.navigate.click_button_by_id( HtmlTagId.LIST_IN_COLUMNS_CHECK_ID, 1)
+        self.navigate.click_button_by_id(HtmlTagId.LIST_IN_COLUMNS_CHECK_ID, 1)
         time.sleep(1)
     
     def __select_columns(self):
-        for i in range(1, 16):
+        for i in range(1, 21):
             self.driver.find_element(By.XPATH, self.__set_column_xpath(i)).click()
     
     def __filter_customers(self, start_code, end_code, select_boxes):
@@ -61,7 +61,7 @@ class CustomerReportData:
     def __generate_csv(self, start_code, end_code, select_boxes):
         self.__filter_customers(start_code, end_code, select_boxes)
         self.driver.find_element(By.XPATH, HtmlTagId.CUSTOMER_GENERATE_REPORT_XPATH).click()
-        self.navigate.click_button_by_xpath(HtmlTagId.GENERATE_CSV_FILE_BUTTON_XPATH, 2)
+        self.navigate.click_button_by_xpath(HtmlTagId.GENERATE_CSV_FILE_BUTTON_XPATH, 200)
         time.sleep(20)
         
     def __rename_file(self, old_filename, new_filename):
