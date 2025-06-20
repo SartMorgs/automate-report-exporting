@@ -16,7 +16,7 @@ class Jit:
         self.STATUS_COLUMN = 'DescricaoPosicao'
         self.SENT_TO_LABORATORY_STRING = 'Enviada ao laboratório'
         
-        self.move_file = MoveFile(self.domain, self.report_name)
+        self.move_file = MoveFile(self.domain, self.report_name, 'os')
         
     def __get_send_to_laboratory_data(self):
         df = pd.read_csv(self.move_file.SOURCE_REPORT_EXTRACTION_PATH)

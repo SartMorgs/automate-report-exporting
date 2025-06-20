@@ -1,11 +1,10 @@
-import pandas as pd
 from data_loading.models.jit import Jit
 from data_loading.repositories.jit_repository import JitRepository
 from data_loading.config.database import session
 from data_processing.jit import Jit as processingJit
 
 
-class JitMain():
+class JitMain:
     def __init__(self):
         self.jit_repository = JitRepository(session)
         self.processing_jit = processingJit()
@@ -48,7 +47,3 @@ class JitMain():
         df = self.processing_jit.get_data()
         for os in df[self.processing_jit.OS_NUMBER_COLUMN]:
             self.jit_repository.update_to_is_generated(os)
-        
-if __name__ == "__main__":
-    jit = JitMain()
-    jit.main()
