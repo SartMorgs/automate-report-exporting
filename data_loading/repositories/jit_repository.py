@@ -33,6 +33,9 @@ class JitRepository:
     
     def get_all_jits(self):
         return self.db.query(Jit).all()
+    
+    def get_all_not_generated_jit(self):
+        return self.db.query(Jit).filter_by(is_generated=False)
 
     def delete_all_jits(self):
         stm = f"DELETE FROM {Jit.__tablename__}"

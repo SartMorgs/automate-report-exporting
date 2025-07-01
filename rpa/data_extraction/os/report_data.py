@@ -34,9 +34,9 @@ class OsReportData:
         return f"arguments[0].value = '{value}';"
 
     def __filter_by_date(self):
-        self.navigate.click_button_by_xpath(CommonHtmlId.FILTER_BUTTON_XPATH, 0)
         start_date = self.driver.find_element(By.ID, HtmlTagId.START_DATE_FORM_ID)
         end_date = self.driver.find_element(By.ID, HtmlTagId.END_DATE_FORM_ID)
+        time.sleep(5)
         self.driver.find_element(By.ID, HtmlTagId.START_DATE_FORM_ID).click()
         self.driver.execute_script(self.build_arguments_value_script(self.start_date_filter), start_date)
         self.driver.find_element(By.ID, HtmlTagId.END_DATE_FORM_ID).click()

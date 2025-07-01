@@ -13,11 +13,12 @@ class FillerData(LayoutBuilder):
         self.__JIT_VERTICAL_COUNT = get_jit_report_vertical_count(len(self.data)) + 1
         
         super().__init__(len(self.data), filename, repro_count)
-        
+    
+    # TO-DO: Review logic due lower case
     def __format_name(self, source_name):
         if len(source_name) < 20:
             return source_name
-        list_name = source_name.split(' ')
+        list_name = source_name.upper().split(' ')
         list_name_used = [name for name in list_name if name.lower() not in list_name]
         list_short_middle_name = [name[0] for name in list_name_used[1:-1]]
         middle_name = ' '.join(name for name in list_short_middle_name)
@@ -66,14 +67,13 @@ class FillerData(LayoutBuilder):
                     cell.value = data[cell.row]
         
     def build_and_fill(self):
-        #wb = load_workbook(self.filename)
         wb = Workbook()
         ws = wb.active
         
         sort_data = self.__convert_to_string(self.__get_sort_data())
         rows_count = len(sort_data)
 
-        # This logis is used in both FillerData and LayoutBuilder
+        # This logic is used in both FillerData and LayoutBuilder
         first_row = FIRST_ROW_USED
         total = rows_count
         store_count = self.rows_count - self._REPRO_COUNT
