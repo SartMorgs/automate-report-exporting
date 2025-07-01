@@ -35,4 +35,6 @@ class Jit:
     
     def get_data(self):
         df = self.__get_send_to_laboratory_data()
+        if df[self.NOTE_COLUMN].dtype == "int64":
+            return df
         return self.__filter_note_column_for_valid_values(df)

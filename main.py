@@ -6,17 +6,19 @@ from data_loading.config.database import init_db
 
 
 report_export_main = ReportExportMain()
-report_export_main.main()
-
 init_db()
 
 # CUSTOMER
-customer_database_feeding = CustomerMain()
-customer_database_feeding.create_all_customers()
+# report_export_main.export_customer()
+
+# customer_database_feeding = CustomerMain()
+# customer_database_feeding.create_all_customers()
 
 # JIT
-# jit_database_feeding = JitMain()
-# jit_database_feeding.create_jit()
-# jit_generation = JitGeneration()
-# jit_generation.generate()
-# jit_database_feeding.update_is_generated()
+report_export_main.export_jit()
+
+jit_database_feeding = JitMain()
+jit_database_feeding.create_jit()
+jit_generation = JitGeneration()
+jit_generation.generate()
+jit_database_feeding.update_is_generated()

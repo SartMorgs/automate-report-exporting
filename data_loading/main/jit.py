@@ -11,6 +11,7 @@ class JitMain:
 
         self.__VENDOR_ALIAS = {
             '6': 'Nany',
+            '15': 'Nany', # needs review
             '16': 'Nany',
             '20': 'Aline',
             '12': 'Marilete',
@@ -36,14 +37,18 @@ class JitMain:
         vendor_code = vendor_name[:2].rstrip()
         return self.__VENDOR_ALIAS[vendor_code]
     
+    def __get_all_not_generated_jit(self):
+        not_generated_jit = self.jit_repository.get_all_not_generated_jit()
+        return [jit for jit in not_generated_jit]
+
     def delete_all_jits(self):
         self.jit_repository.delete_all_jits()
             
     def create_jit(self):
         df = self.processing_jit.get_data()
         self.__save_jit_as_not_generated(df)
-        
+
     def update_is_generated(self):
-        df = self.processing_jit.get_data()
-        for os in df[self.processing_jit.OS_NUMBER_COLUMN]:
-            self.jit_repository.update_to_is_generated(os)
+        not_generated_jit = self.__get_all_not_generated_jit()
+        for jit in not_generated_jit:
+            self.jit_repository.update_to_is_generated(jit.os_number)

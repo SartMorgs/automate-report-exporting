@@ -18,19 +18,19 @@ class ReportExportMain:
         load_dotenv()
         self.final_code = int(os.getenv('FINAL_CODE', '30000'))
         
-        #self.os_report_data = OsReportData(self.reference_date, self.reference_date)
-        self.customer_report_data = CustomerReportData(self.final_code)
-        
-    def __move_file(self, report_name, file_name):
-        move_file = MoveFile('otica-nany', report_name, file_name)
-        source_path = f'{self.user_path}\\Downloads\\{file_name}.csv'
+    def __move_file(self, report_name, old_file_name, new_file_name):
+        move_file = MoveFile('otica-nany', report_name, new_file_name)
+        source_path = f'{self.user_path}\\Downloads\\{old_file_name}.csv'
         move_file.move_file_from_downloads(source_path)
         
+    def export_jit(self):
+        os_report_data = OsReportData(self.reference_date, self.reference_date)
+        os_report_data.generate_jit_report()
+        self.__move_file('os', 'pivot', 'os')
         
-    def main(self):
-        #self.os_report_data.generate_jit_report()
-        #self.__move_file('os', 'pivot.csv')
-        self.customer_report_data.generate_customer_report()
+    def export_customer(self):
+        customer_report_data = CustomerReportData(self.final_code)
+        customer_report_data.generate_customer_report()
         it_code = 5000
         while it_code <= self.final_code:
             self.__move_file('customer', f'customer_provider_{it_code}')
