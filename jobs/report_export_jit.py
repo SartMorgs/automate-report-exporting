@@ -4,14 +4,14 @@ from data_loading.main.jit import JitMain
 from report_feeding.report.main.jit_generation import JitGeneration
 
 
-# report_export_main = ReportExportMain()
+report_export_main = ReportExportMain()
 init_db()
 
 # JIT
-# report_export_main.export_jit()
+report_export_main.export_jit()
 
 jit_database_feeding = JitMain()
 jit_database_feeding.create_jit()
 jit_generation = JitGeneration()
 jit_generation.generate()
-jit_database_feeding.update_is_generated() #não está funcionando, está somente fazendo a atualização dos jits do último dia
+jit_database_feeding.update_is_generated()

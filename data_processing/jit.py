@@ -1,40 +1,32 @@
-import pandas as pd
-from rpa.common.move_file import MoveFile
+import re
+from dataclasses import dataclass
+from data_processing.light_transformation import LightTransformation
 
-class Jit:
+@dataclass(frozen=True)
+class Jit(LightTransformation):
+    OS_DATE_COLUMN = "os_data"
+    OS_NUMBER_COLUMN = "os_number"
+    LABORATORY_COLUMN = "laboratory"
+    CUSTOMER_NAME_COLUMN = "customer_name"
+    NOTE_COLUMN = "note"
+    DUE_DATE_COLUMN = "due_date"
+    VENDOR_ROW_COLUMN = "seller"
+    STATUS_COLUMN = "status"
+
     def __init__(self):
-        self.domain = 'otica-nany'
-        self.report_name = 'os'
+        pass
 
-        self.OS_DATE_COLUMN = 'Data OS'
-        self.OS_NUMBER_COLUMN = 'numero_os'
-        self.LABORATORY_COLUMN = 'Laboratório'
-        self.CUSTOMER_NAME_COLUMN = 'Nome Cliente'
-        self.NOTE_COLUMN = 'Observacao'
-        self.DUE_DATE_COLUMN = 'Previsão de Entrega'
-        self.VENDOR_ROW_COLUMN = 'Vendedor'
-        self.STATUS_COLUMN = 'DescricaoPosicao'
-        self.SENT_TO_LABORATORY_STRING = 'Enviada ao laboratório'
-        
-        self.move_file = MoveFile(self.domain, self.report_name, 'os')
-        
-    def __get_send_to_laboratory_data(self):
-        df = pd.read_csv(self.move_file.SOURCE_REPORT_EXTRACTION_PATH)
+    @staticmethod
+    def get_jit_csv_column_names():
+        return [
+            Jit.OS_DATE_COLUMN, Jit.OS_NUMBER_COLUMN, Jit.LABORATORY_COLUMN, Jit.CUSTOMER_NAME_COLUMN,
+            Jit.NOTE_COLUMN, Jit.DUE_DATE_COLUMN, Jit.VENDOR_ROW_COLUMN, Jit.STATUS_COLUMN
+        ]
 
-        df[self.OS_DATE_COLUMN] = pd.to_datetime(df[self.OS_DATE_COLUMN], errors='coerce', dayfirst=True)
-        df[self.OS_NUMBER_COLUMN] = df[self.OS_NUMBER_COLUMN].str.replace('.', '').str.replace(',00', '').astype(int)
-        df[self.DUE_DATE_COLUMN] = pd.to_datetime(df[self.DUE_DATE_COLUMN], errors='coerce', dayfirst=True)
-        
-        return df[df[self.STATUS_COLUMN] == self.SENT_TO_LABORATORY_STRING]
-    
-    
-    def __filter_note_column_for_valid_values(self, df):
+    @staticmethod
+    def filter_note_column_for_valid_values(jit_list):
         string_regular_expression = r'[A-Za-z]'
-        only_integer_note_column_df = df[~df[self.NOTE_COLUMN].str.contains(string_regular_expression, na=False)]
-        return only_integer_note_column_df[only_integer_note_column_df[self.NOTE_COLUMN] != '0']
-    
-    def get_data(self):
-        df = self.__get_send_to_laboratory_data()
-        if df[self.NOTE_COLUMN].dtype == "int64":
-            return df
-        return self.__filter_note_column_for_valid_values(df)
+        pattern = re.compile(string_regular_expression)
+        condition_for_note_valid_columns = lambda row: not pattern.match(row[Jit.NOTE_COLUMN]) and row[Jit.NOTE_COLUMN] != "0"
+        
+        return [row for row in jit_list if condition_for_note_valid_columns]

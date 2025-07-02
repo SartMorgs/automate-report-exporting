@@ -1,7 +1,6 @@
 from openpyxl.styles.borders import Border, Side
 from openpyxl.styles import Font, Alignment
 from openpyxl.styles import PatternFill
-from report_feeding.report.jit.utils import get_jit_report_vertical_count
 from report_feeding.report.jit.utils import STORE_VALUE, REPRO_VALUE
 
 

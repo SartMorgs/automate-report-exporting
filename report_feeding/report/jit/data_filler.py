@@ -1,7 +1,13 @@
 from datetime import datetime
 from openpyxl import Workbook
-from report_feeding.report.jit.utils import get_jit_report_vertical_count
-from report_feeding.report.jit.utils import JIT_COLUMNS_USED, FIRST_COLUMN_USED, COLUMN_INTERVAL, FIRST_ROW_USED, JIT_VERTICAL_SIZE, ROW_INTERVAL, STORE_VALUE, REPRO_VALUE, JIT_COLUMN_SIZE
+from report_feeding.report.jit.utils import (
+    get_jit_report_vertical_count, split_list_by_space, get_list_of_strings_with_more_than_two_char,
+    get_first_letter_of_each_string
+)
+from report_feeding.report.jit.utils import (
+    JIT_COLUMNS_USED, FIRST_COLUMN_USED, COLUMN_INTERVAL, FIRST_ROW_USED, JIT_VERTICAL_SIZE, ROW_INTERVAL, STORE_VALUE, REPRO_VALUE, JIT_COLUMN_SIZE,
+    FIRST_CHAR, FIRST_NAME, LAST_NAME, FIRST_LIST_ITEM, SECOND_LIST_ITEM
+)
 from report_feeding.report.jit.layout_builder import LayoutBuilder
 
 
@@ -13,23 +19,30 @@ class FillerData(LayoutBuilder):
         self.__JIT_VERTICAL_COUNT = get_jit_report_vertical_count(len(self.data)) + 1
         
         super().__init__(len(self.data), filename, repro_count)
-    
-    # TO-DO: Review logic due lower case
+
     def __format_name(self, source_name):
         if len(source_name) < 20:
             return source_name
-        list_name = source_name.upper().split(' ')
-        list_name_used = [name for name in list_name if name.lower() not in list_name]
-        list_short_middle_name = [name[0] for name in list_name_used[1:-1]]
-        middle_name = ' '.join(name for name in list_short_middle_name)
-        final_name = f'{list_name_used[0]} {middle_name} {list_name_used[-1]}'
+
+        list_name = split_list_by_space(source_name)
+        list_name_used = get_list_of_strings_with_more_than_two_char(list_name)
+
+        list_short_middle_name = get_first_letter_of_each_string(list_name_used[FIRST_NAME:LAST_NAME])
+        all_middle_name = " ".join(name for name in list_short_middle_name)
+
+        final_name = f"{list_name_used[FIRST_NAME]} {all_middle_name} {list_name_used[LAST_NAME]}"
         return final_name
     
+    def __get_vendor_name_from_note_string(self, source_note_string):
+        if source_note_string[FIRST_LIST_ITEM].isdigit():
+            return f"{source_note_string.split('-')[FIRST_LIST_ITEM]} - ", source_note_string.split("-")[SECOND_LIST_ITEM]
+        return "", source_note_string
+
     def __format_vendor(self, source_name):
         if len(source_name) < 24:
             return source_name
-        source_name_with_no_digits = source_name.split('-')[1] if source_name[0].isdigit() else source_name
-        prefix = f"{source_name.split('-')[0]} - " if source_name[0].isdigit() else ''
+
+        prefix, source_name_with_no_digits = self.__get_vendor_name_from_note_string(source_name)
         short_name = self.__format_name(source_name_with_no_digits)
         return (prefix + short_name)
 
