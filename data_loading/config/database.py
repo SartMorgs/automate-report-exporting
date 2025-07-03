@@ -7,5 +7,5 @@ engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 session = SessionLocal()
 
-def init_db():
+def init_db() -> None:
     Base.metadata.create_all(engine)

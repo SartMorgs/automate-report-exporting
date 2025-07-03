@@ -1,15 +1,41 @@
 from datetime import datetime
+from dataclasses import dataclass
+from data_processing.light_transformation import LightTransformation
 
-class Customer:
+
+@dataclass(frozen=True)
+class Customer(LightTransformation):
+    ID = "id"
+    NAME = "name"
+    FANTASY_NAME = "fantasy_name"
+    CPF = "cpf"
+    BIRTHDAY = "birthday"
+    CUSTOMER_TYPE = "customer_type"
+    REGISTER_DATE = "register_date"
+    LAST_PRODUCT_BOUGHT = "last_product_bought"
+    ACTIVE = "active"
+    CEP = "cep"
+    ADDRESS = "address"
+    HOUSE_NUMBER = "house_number"
+    COMPLEMENT = "complement"
+    NEIGHBORHOOD = "neighborhood"
+    CITY = "city"
+    STATE = "state"
+    COUNTRY = "country"
+    PHONE_NUMBER = "phone_number"
+    CELLPHONE_NUMBER = "cellphone_number"
+    EMAIL = "email"
+    
     def __init__(self):
         pass
     
     @staticmethod
     def get_customer_csv_column_names():
         return [
-            "id", "name", "fantasy_name", "cpf", "cep", "address", "house_number", "complement", "neighborhood",
-            "city", "state", "country", "phone_number", "cellphone_number", "email", "register_date",
-            "last_product_bought", "customer_type", "birthday"
+            Customer.ID, Customer.NAME, Customer.FANTASY_NAME, Customer.CPF, Customer.CEP, Customer.ADDRESS,
+            Customer.HOUSE_NUMBER, Customer.COMPLEMENT, Customer.NEIGHBORHOOD, Customer.CITY, Customer.STATE,
+            Customer.COUNTRY, Customer.PHONE_NUMBER, Customer.CELLPHONE_NUMBER, Customer.EMAIL, Customer.REGISTER_DATE,
+            Customer.LAST_PRODUCT_BOUGHT, Customer.CUSTOMER_TYPE, Customer.BIRTHDAY
         ]
 
     @staticmethod
@@ -55,30 +81,3 @@ class Customer:
         ]
 
         return result
-
-    @staticmethod
-    def process_csv_date_field(array_list, date_field):
-        for entry in array_list:
-            try:
-                if entry[date_field]:
-                    entry[date_field] = datetime.strptime(entry[date_field], "%d/%m/%Y").strftime("%Y-%m-%d")
-                else:
-                    entry[date_field] = None
-            except ValueError as err:
-                entry[date_field] = None
-
-    @staticmethod
-    def process_csv_int_field(array_list, date_field):
-        for entry in array_list:
-            try:
-                if not isinstance(entry[date_field], int):
-                    entry[date_field] = None
-            except ValueError as err:
-                entry[date_field] = None
-
-    @staticmethod
-    def upper_strings_of_list(array_list):
-        return [
-            {key: value.upper() if isinstance(value, str) else value for key, value in item.items()}
-            for item in array_list
-        ]
