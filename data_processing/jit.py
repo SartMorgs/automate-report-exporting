@@ -10,8 +10,9 @@ class Jit(LightTransformation):
     CUSTOMER_NAME_COLUMN = "customer_name"
     NOTE_COLUMN = "note"
     DUE_DATE_COLUMN = "due_date"
-    VENDOR_ROW_COLUMN = "seller"
+    SELLER_COLUMN = "seller"
     STATUS_COLUMN = "status"
+    IS_GENERATED_COLUMN = "is_generated"
 
     def __init__(self):
         pass
@@ -20,7 +21,7 @@ class Jit(LightTransformation):
     def get_jit_csv_column_names():
         return [
             Jit.OS_DATE_COLUMN, Jit.OS_NUMBER_COLUMN, Jit.LABORATORY_COLUMN, Jit.CUSTOMER_NAME_COLUMN,
-            Jit.NOTE_COLUMN, Jit.DUE_DATE_COLUMN, Jit.VENDOR_ROW_COLUMN, Jit.STATUS_COLUMN
+            Jit.NOTE_COLUMN, Jit.DUE_DATE_COLUMN, Jit.SELLER_COLUMN, Jit.STATUS_COLUMN
         ]
 
     @staticmethod
