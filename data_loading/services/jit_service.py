@@ -76,7 +76,7 @@ class JitService:
             jit_list (List[Dict[str, str]]): dataframe with all jits
         """
         for row in jit_list:
-            vendor_with_alias = self.__get_vendor_alias(row[JitProcess.VENDOR_ROW_COLUMN])
+            vendor_with_alias = self.__get_vendor_alias(row[JitProcess.SELLER_COLUMN])
             jit = Jit(
                 os_date=row[JitProcess.OS_DATE_COLUMN],
                 os_number=row[JitProcess.OS_NUMBER_COLUMN],
