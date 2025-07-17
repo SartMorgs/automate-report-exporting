@@ -11,12 +11,12 @@ The content of this abstract are:
 ## How to run it by yourself
 
 **1. Set the following environment variables in a .env file:**
-    - ```STORE_PATH``` --> Local path to file saving
-    - ```DB_NAME``` --> Database name
-    - ```DB_USER``` --> Database username
-    - ```DB_PASSWORD``` --> Database password
-    - ```DB_HOST``` --> Database host
-    - ```DB_PORT``` --> Database port
+- ```STORE_PATH``` --> Local path to file saving
+- ```DB_NAME``` --> Database name
+- ```DB_USER``` --> Database username
+- ```DB_PASSWORD``` --> Database password
+- ```DB_HOST``` --> Database host
+- ```DB_PORT``` --> Database port
 
 - Only Jit:
     - ```URL``` --> ERP url
