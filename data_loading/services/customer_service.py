@@ -35,7 +35,7 @@ class CustomerService:
 
             for row in reader:
                 row[CustomerProcess.ACTIVE] = True
-                if CustomerProcess.validate_csv_cpf(row[CustomerProcess.CPF], False):
+                if CustomerProcess.is_cpf_valid(row[CustomerProcess.CPF], False):
                     row[CustomerProcess.ACTIVE] = False
                 filtered_data.append(row)
  
